@@ -5,7 +5,7 @@ import { PrismaService } from 'src/prisma.service';
 export class StageService {
     constructor(private prisma: PrismaService) {}
     
-    async verifyUserCronogram(userId: number, cronogramId: number) {
+    async verifyUserCronogram(userId: string, cronogramId: number) {
         const cronogram = await this.prisma.cronogram.findFirst({
             where: {
                 id: cronogramId,
@@ -26,7 +26,7 @@ export class StageService {
         });
     }
     
-    async create(userId: number, cronogramId: number, name: string) {
+    async create(userId: string, cronogramId: number, name: string) {
         if(!await this.verifyUserCronogram(userId, cronogramId)) {
             throw new UnauthorizedException();
         }
@@ -45,7 +45,7 @@ export class StageService {
         return cronogramStage;
     }
     
-    async getAll(userId: number, cronogram: number) {
+    async getAll(userId: string, cronogram: number) {
         const stages = await this.prisma.stage.findMany({
             where: {
                 cronogram: {
@@ -60,7 +60,7 @@ export class StageService {
         return stages;
     }
     
-    async update(userId: number, id: number, name: string ) {
+    async update(userId: string, id: number, name: string ) {
         const stageValues = await this.verifyUserStage(id);
         
         if(!stageValues) {
@@ -83,7 +83,7 @@ export class StageService {
         return stageUpdate;
     }
 
-    async updateCompleted(userId: number, id: number, isCompleted: boolean) {
+    async updateCompleted(userId: string, id: number, isCompleted: boolean) {
         const stageValues = await this.verifyUserStage(id);
         
         if(!stageValues) {
@@ -151,7 +151,7 @@ export class StageService {
         return stageUpdate;
     }
 
-    async delete(userId: number, id: number) {
+    async delete(userId: string, id: number) {
         const stageValues = await this.verifyUserStage(id);
         
         if(!stageValues) {

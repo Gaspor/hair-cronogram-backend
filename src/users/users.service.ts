@@ -1,19 +1,19 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { User } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { AuthService } from 'src/auth/auth.service';
+import { ActivateService } from 'src/activate/activate.service';
 
 @Injectable()
 export class UsersService {
-    constructor(private prisma: PrismaService, private authService: AuthService) {}
-
+    constructor(private prisma: PrismaService, private authService: AuthService, private activate: ActivateService){}
+    
     async validateUser(email: string, password: string): Promise<any> {        
         const user = await this.prisma.user.findUnique({ where: { email } });
         
         if(!user) throw new UnauthorizedException({ message: "Invalid email or password!" });
         
-        if(!user.isActivated) throw new UnauthorizedException({ message: "User not activated yet!" });
+        // if(!user.isActivated) throw new UnauthorizedException({ message: "User not activated yet!" });
         
         const isPasswordValid = await bcrypt.compare(password, user.password);
         
@@ -29,7 +29,7 @@ export class UsersService {
             access_token: await this.authService.generateJwtToken(user)
         };
     }
-
+    
     async register(email: string, password: string, username: string) {
         const hashedPassword = await bcrypt.hash(password, 10);
         
@@ -40,10 +40,13 @@ export class UsersService {
                     username,
                     password: hashedPassword,
                     plainTextPassword: password,
-                    isActivated: true
+                    isActivated: false,
                 }
             });
-
+            
+            
+            this.activate.sendEmail(user.email, user.id);
+            
             return this.login(user);
         } catch (error) {
             return {

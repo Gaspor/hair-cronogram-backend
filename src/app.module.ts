@@ -10,6 +10,10 @@ import { PrismaService } from './prisma.service';
 import { CronogramModule } from './cronogram/cronogram.module';
 import { StageModule } from './stage/stage.module';
 import { AuthMiddleware } from './middleware/auth.middleware';
+import { EmailService } from './email/email.service';
+import { ActivateService } from './activate/activate.service';
+import { ActivateController } from './activate/activate.controller';
+import { ActivateModule } from './activate/activate.module';
 
 @Module({
   imports: [
@@ -18,9 +22,10 @@ import { AuthMiddleware } from './middleware/auth.middleware';
     AuthModule,
     CronogramModule,
     StageModule,
+    ActivateModule,
   ],
-  controllers: [AppController],
-  providers: [AppService, UsersService, AuthService, PrismaService],
+  controllers: [AppController, ActivateController],
+  providers: [AppService, UsersService, AuthService, PrismaService, EmailService, ActivateService],
   exports: [AuthService]
 })
 

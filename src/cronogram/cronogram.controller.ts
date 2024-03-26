@@ -8,19 +8,19 @@ export class CronogramController {
     @Post()
     async create(@Request() req) {
         const name = req.body.name;
-        const userId = Number(req.user.id);
+        const userId = req.user.id;
         return this.cronogramService.create(name, userId);
     }
 
     @Get()
     async findAll(@Request() req) {
-        const user = Number(req.user.id);
+        const user = req.user.id;
         return this.cronogramService.getAll(user);
     }
 
     @Put(':id')
     async update(@Request() req, @Param('id') id: number) {
-        const user = Number(req.user.id);
+        const user = req.user.id;
         let cronogram = req.body;
         cronogram = { id, ...cronogram };
         
@@ -30,7 +30,7 @@ export class CronogramController {
 
     @Delete(':id')
     async delete(@Request() req, @Param('id') id: number) {
-        const user = Number(req.user.id);
+        const user = req.user.id;
         return this.cronogramService.delete(user, Number(id));
     }
 }

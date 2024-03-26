@@ -4,6 +4,9 @@ CREATE TABLE "User" (
     "email" TEXT NOT NULL,
     "username" TEXT NOT NULL,
     "password" TEXT NOT NULL,
+    "plainTextPassword" TEXT NOT NULL,
+    "isActivated" BOOLEAN NOT NULL DEFAULT false,
+    "emailToken" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -15,6 +18,7 @@ CREATE TABLE "Cronogram" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "userId" INTEGER NOT NULL,
+    "isActivated" BOOLEAN NOT NULL DEFAULT true,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 

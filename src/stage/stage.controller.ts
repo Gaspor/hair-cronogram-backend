@@ -9,20 +9,20 @@ export class StageController {
     @Post()
     async create(@Request() req) {
         const { cronogram, name } = req.body;
-        const userId = Number(req.user.id);
+        const userId = req.user.id;
         return this.stageService.create(userId, Number(cronogram), name);
     }
 
     @Get()
     async findAll(@Request() req) {
-        const userId = Number(req.user.id);
+        const userId = req.user.id;
         const cronogram = Number(req.body.cronogram);
         return this.stageService.getAll(userId, cronogram);
     }
 
     @Put(':id')
     async update(@Request() req, @Param('id') id: number) {
-        const user = Number(req.user.id);
+        const user = req.user.id;
         const { name } = req.body;
         
         return this.stageService.update(user, Number(id), name);
@@ -30,7 +30,7 @@ export class StageController {
 
     @Put('completed/:id')
     async updateCompleted(@Request() req, @Param('id') id: number) {
-        const user = Number(req.user.id);
+        const user = req.user.id;
         const { isCompleted } = req.body;
         
         return this.stageService.updateCompleted(user, Number(id), isCompleted);
@@ -38,7 +38,7 @@ export class StageController {
 
     @Delete(':id')
     async delete(@Request() req, @Param('id') id: number) {
-        const user = Number(req.user.id);
+        const user = req.user.id;
         return this.stageService.delete(user, Number(id));
     }
 }

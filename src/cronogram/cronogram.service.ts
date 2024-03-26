@@ -5,7 +5,7 @@ import { PrismaService } from 'src/prisma.service';
 export class CronogramService {
     constructor(private prisma: PrismaService) {}
     
-    async create(name: string, user: number) {
+    async create(name: string, user: string) {
         if(this.verifyIsActivated(user)) {
             await this.setAllDeactivated(user);
         }
@@ -24,11 +24,11 @@ export class CronogramService {
         return cronogram;
     }
     
-    async verifyIsActivated(user: number) {
+    async verifyIsActivated(user: string) {
         const cronogram = await this.prisma.cronogram.findFirst({
             where: {
                 user: {
-                    id: Number(user)
+                    id: user
                 }
             }
         });
@@ -40,7 +40,7 @@ export class CronogramService {
         return true;
     }
     
-    async setAllDeactivated(user: number) {
+    async setAllDeactivated(user: string) {
         const cronogram = await this.prisma.cronogram.updateMany({
             where: {
                 user: {
@@ -54,7 +54,7 @@ export class CronogramService {
         });
     }
     
-    async getAll(user: number) {
+    async getAll(user: string) {
         const cronograms = await this.prisma.cronogram.findMany({
             where: {
                 user: {
@@ -77,7 +77,7 @@ export class CronogramService {
         return cronograms;
     }
 
-    async isOwned(userId: number, cronogramId: number) {
+    async isOwned(userId: string, cronogramId: number) {
         return await this.prisma.cronogram.findFirst({
             where: {
                 id: cronogramId,
@@ -88,7 +88,7 @@ export class CronogramService {
         })
     }
 
-    async update(user: number, cronogram: { id: number, name: string, isActivated: boolean }) {
+    async update(user: string, cronogram: { id: number, name: string, isActivated: boolean }) {
         cronogram.id = Number(cronogram.id);
         
         if (!await this.isOwned(user, cronogram.id)) {
@@ -115,7 +115,7 @@ export class CronogramService {
         return cron;
     }
 
-    async delete(user: number, id: number) {
+    async delete(user: string, id: number) {
         try {
             const deleteCronogram = await this.prisma.cronogram.delete({
                 where: {
