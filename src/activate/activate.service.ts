@@ -6,7 +6,7 @@ import { PrismaService } from 'src/prisma.service';
 export class ActivateService {
     constructor(private prisma: PrismaService, private email: EmailService) {}
 
-    async sendEmail(user: string, email: string) {
+    async sendEmail(email: string, user: string) {
         return await this.email.sendEmail(email, user);
     }
 

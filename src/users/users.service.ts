@@ -44,7 +44,6 @@ export class UsersService {
                 }
             });
             
-            
             this.activate.sendEmail(user.email, user.id);
             
             return this.login(user);

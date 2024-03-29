@@ -8,6 +8,8 @@ export class EmailService {
     async sendEmail(to: string, emailToken: string) {
         const resend = new Resend(process.env.RESEND_SECRET);
 
+        console.log(`Sending email to: ${to}`);
+        
         resend.emails.send({
             from: 'onboarding@resend.dev',
             to,
